@@ -13,4 +13,5 @@ Clicked State: (Features some Korean status messages for better accessibility, h
 
 ![cat_food_tracker_clicked](https://github.com/shawnh29/cat_food_tracker/assets/81540655/db0d24c7-f452-4a8c-9f05-3d47126c9d80)
 
+An Android version of the app is in the works!
 
