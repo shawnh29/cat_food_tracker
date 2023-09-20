@@ -5,4 +5,4 @@ Created by Shawn Han
 https://cat-food-tracker.netlify.app/
 
 Main Page:
-![alt text] (https://github.com/shawnh29/cat_food_tracker/blob/main/cat_food_tracker_default.jpg?raw=true)
+![alt text] (https://github.com/shawnh29/cat_food_tracker/blob/main/public/cat_food_tracker_default.jpg?raw=true)
