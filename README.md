@@ -1,5 +1,6 @@
 Welcome to the Cat Food Tracker!
 Keep your cat's food and treats in check!
+All trackers automatically reset every night!
 
 Created by Shawn Han
 
