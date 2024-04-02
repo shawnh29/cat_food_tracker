@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import './Home.css'
+// import PlaytimeCounter from './PlaytimeCounter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faSquareCheck, faSquareXmark, faThumbsUp, faCloudSun, faMoon, faCoffee, faCat} from "@fortawesome/free-solid-svg-icons";
+import {faSquareCheck, faSquareXmark, faThumbsUp, faCloudSun, faMoon, faCoffee, faCat, faGamepad, faPlay} from "@fortawesome/free-solid-svg-icons";
 
 function Home() {
     const [gaveBreakfast, setGaveBreakfast] = useState(false);
@@ -11,7 +12,8 @@ function Home() {
     const [morningChuruDate, setMorningChuruDate] = useState(new Date());
     const [eveningChuruDate, setEveningChuruDate] = useState(new Date());
     const [breakfastClickDate, setBreakfastClickDate] = useState(new Date());
-
+    const [playtimes, setPlaytimes] = useState([])
+    
     useEffect(() => {
       var timer = setInterval(() => setDate(new Date()), 1000);
       if (date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0) {
@@ -22,21 +24,37 @@ function Home() {
       }
     })
 
+    // THERE'S A BUG WHERE THE VERY FIRST ELEMENT DOESN'T GET SAVED INTO LOCALSTORAGE, NEED TO FIX
     useEffect(() => {
       setGaveBreakfast(localStorage.getItem("gaveBreakfast"));
       setGaveMorningChuru(localStorage.getItem("gaveMorningChuru"));
       setGaveEveningChuru(localStorage.getItem("gaveEveningChuru"));
-      setBreakfastClickDate(new Date(localStorage.getItem("breakfastDate")))
-      setMorningChuruDate(new Date(localStorage.getItem("morningChuruDate")))
-      setEveningChuruDate(new Date(localStorage.getItem("eveningChuruDate")))
+      setBreakfastClickDate(new Date(localStorage.getItem("breakfastDate")));
+      setMorningChuruDate(new Date(localStorage.getItem("morningChuruDate")));
+      setEveningChuruDate(new Date(localStorage.getItem("eveningChuruDate")));
+      if (localStorage.getItem("playtimes")) {
+        var localStoragePlaytimes = JSON.parse(localStorage.getItem("playtimes"));
+        if (localStoragePlaytimes) {
+          setPlaytimes(localStoragePlaytimes);
+        }
+      }
     }, []);
+
+    const addPlaytime = () => {
+      setPlaytimes([ ...playtimes, {
+          id: playtimes.length,
+          value: date.toLocaleString([], {hour: '2-digit', minute: '2-digit'})
+      }])
+      localStorage.setItem("playtimes", JSON.stringify(playtimes));
+      console.log("Playtimes (in add func): ", playtimes)
+    }
 
     function handleBreakfastClick() {
       setGaveBreakfast(!gaveBreakfast);
       setBreakfastClickDate(new Date());
       if (gaveBreakfast) {
         localStorage.setItem("gaveBreakfast", "true");
-        localStorage.setItem("breakfastDate", breakfastClickDate)
+        localStorage.setItem("breakfastDate", breakfastClickDate);
       } else {
         localStorage.setItem("gaveBreakfast", "false");
       }
@@ -47,7 +65,7 @@ function Home() {
       setMorningChuruDate(new Date());
       if (gaveMorningChuru) {
         localStorage.setItem("gaveMorningChuru", "true");
-        localStorage.setItem("morningChuruDate", morningChuruDate)
+        localStorage.setItem("morningChuruDate", morningChuruDate);
       } else {
         localStorage.setItem("gaveMorningChuru", "false");
       }
@@ -58,7 +76,7 @@ function Home() {
       setEveningChuruDate(new Date());
       if (gaveEveningChuru) {
         localStorage.setItem("gaveEveningChuru", "true");
-        localStorage.setItem("eveningChuruDate", eveningChuruDate)
+        localStorage.setItem("eveningChuruDate", eveningChuruDate);
       } else {
         localStorage.setItem("gaveEveningChuru", "false");
       }
@@ -68,15 +86,17 @@ function Home() {
       localStorage.setItem("gaveBreakfast", "false");
       localStorage.setItem("gaveMorningChuru", "false");
       localStorage.setItem("gaveEveningChuru", "false");
-      localStorage.setItem("breakfastDate", null)
-      localStorage.setItem("morningChuruDate", null)
-      localStorage.setItem("eveningChuruDate", null)
+      localStorage.setItem("breakfastDate", null);
+      localStorage.setItem("morningChuruDate", null);
+      localStorage.setItem("eveningChuruDate", null);
+      localStorage.setItem("playtimes", "");
       setGaveBreakfast(false);
       setGaveMorningChuru(false);
       setGaveEveningChuru(false);
       setEveningChuruDate(null);
       setMorningChuruDate(null);
       setBreakfastClickDate(null);
+      setPlaytimes([]);
     }
 
     return (
@@ -137,9 +157,27 @@ function Home() {
             </p>
             </p>) : (null)}
         </div>
-        <button onClick={handleResetClick} id='reset-button'>Reset</button>
+        <div className='play-tracker-box'>
+          <h4>
+            <FontAwesomeIcon icon={faGamepad}></FontAwesomeIcon> <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>
+            {" "}Playtime
+          </h4>
+          <button onClick={addPlaytime} id='playtime-button'>Record a playtime</button>
+          <ul>
+            <p>
+              {playtimes.map(playtime => (
+              <li key={playtime.id}>
+                Shade played at {playtime.value}, thanks! :)
+              </li>
+            ))}
+            </p>
+          </ul>
+          <button onClick={handleResetClick} id='reset-button'>Reset</button>
+        </div>
         <div className='time_box'>
-          Current time and date: {date.toLocaleDateString()} &nbsp;&nbsp;&nbsp; {date.toLocaleTimeString()}
+          <label id='current-date'>
+            Current date: {date.toLocaleDateString()}
+          </label>
         </div>
       </div>
     </div>
