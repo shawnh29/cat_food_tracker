@@ -10,9 +10,11 @@
   }
   .breakfast-box {
     text-align: center;
+    padding-bottom: 10px;
   }
   .churu-box1, .churu-box2 {
     text-align: center;
+    padding-bottom: 10px;
   }
 
   button {
@@ -107,7 +109,7 @@ p {
 
 .play-tracker-box {
   text-align: center;
-  margin-bottom: 10px;
+  padding-bottom: 15px;
 }
 
 #playtime-button {
@@ -118,9 +120,10 @@ p {
 
 #current-date {
   font-size: 13px;
+  padding-bottom: 10px;
 }
 
-h4 {
+.playtime-header {
   font-size: 112%;
 }
 
@@ -144,7 +147,13 @@ h4 {
 .playtime-labels {
   display:flex;
   justify-content: center;
-  font-weight:600;
-  padding-top: 7px;
-  padding-bottom: 7px;
+  font-weight:700;
+}
+
+#daytime-play-label {
+  padding-top: 10px;
+}
+
+.playtime-labels-box {
+  padding-top: 10px;
 }

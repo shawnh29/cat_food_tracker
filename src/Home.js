@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Home.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faSquareCheck, faSquareXmark, faThumbsUp, faCloudSun, faMoon, faCoffee, faCat, faGamepad, faPlay} from "@fortawesome/free-solid-svg-icons";
+import {faSquareCheck, faSquareXmark, faThumbsUp, faCloudSun, faMoon, faCoffee, faCat, faGamepad, faPlay, faCheckCircle} from "@fortawesome/free-solid-svg-icons";
 
 function Home() {
     const [gaveBreakfast, setGaveBreakfast] = useState(false);
@@ -179,25 +179,25 @@ function Home() {
             Playtime
           </span>
           <div className='playtime1box'>
-            <span className='playtime-labels'> Day-time </span>
-            {(localStorage.getItem("playtime1") === "false") ? (<button onClick={handlePlaytime1_click}>Played</button>)
+            <span className='playtime-labels' id='daytime-play-label'> Day-time </span>
+            {(localStorage.getItem("playtime1") === "false") ? (<div className='playtime-labels-box'><button onClick={handlePlaytime1_click} className='playtime-buttons'>Played</button></div>)
             : (null)}
             {(localStorage.getItem("playtime1") === "true") ?
-              (<span>
-                  @ {playtime1Date.toLocaleDateString()} at {playtime1Date.toLocaleString([], {hour: '2-digit', minute: '2-digit'})}
-              </span>) : (null)}
+              (<p>
+                  <FontAwesomeIcon icon={faCheckCircle}></FontAwesomeIcon>{" "} Had playtime at {playtime1Date.toLocaleString([], {hour: '2-digit', minute: '2-digit'})}!
+              </p>) : (null)}
           </div>
           <div className='playtime2box'>
             <span className='playtime-labels'> Night-time </span>
-            {(localStorage.getItem("playtime2") === "false") ? (<button onClick={handlePlaytime2_click}>Played</button>)
+            {(localStorage.getItem("playtime2") === "false") ? (<div className='playtime-labels-box'><button onClick={handlePlaytime2_click} className='playtime-buttons'>Played</button></div>)
             : (null)}
             {(localStorage.getItem("playtime2") === "true") ?
               (<p>
-                  @ {playtime2Date.toLocaleDateString()} at {playtime2Date.toLocaleString([], {hour: '2-digit', minute: '2-digit'})}
+                  <FontAwesomeIcon icon={faCheckCircle}></FontAwesomeIcon>{" "} Had playtime at {playtime2Date.toLocaleString([], {hour: '2-digit', minute: '2-digit'})}!
               </p>) : (null)}
           </div>
         </div>
-        <button onClick={handleResetClick} id='reset-button'>Reset</button>
+        <button onClick={handleResetClick} id='reset-button'>RESET</button>
         <div className='time_box'>
           <label id='current-date'>
             Current date: {date.toLocaleDateString()}
