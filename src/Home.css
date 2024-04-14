@@ -10,11 +10,11 @@
   }
   .breakfast-box {
     text-align: center;
-    padding-bottom: 10px;
+    padding-bottom: 3px;
   }
   .churu-box1, .churu-box2 {
     text-align: center;
-    padding-bottom: 10px;
+    padding-bottom: 3px;
   }
 
   button {
@@ -109,7 +109,7 @@ p {
 
 .play-tracker-box {
   text-align: center;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
 }
 
 #playtime-button {
