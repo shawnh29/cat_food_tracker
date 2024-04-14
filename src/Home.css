@@ -86,7 +86,6 @@ p {
 .time_box {
   display: flex;
   margin: auto;
-  padding-bottom: 10px;
 }
 
 #churuDate {
@@ -108,13 +107,7 @@ p {
 
 .play-tracker-box {
   text-align: center;
-}
-
-li {
-  list-style-type: none;
-  padding-right: 25px;
-  font-size: 90%;
-  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 #playtime-button {
@@ -129,5 +122,29 @@ li {
 
 h4 {
   font-size: 112%;
-  padding-top: 30px;
+}
+
+.playtime1box, .playtime2box {
+  display: inline-block;
+  padding-inline: 30px;
+}
+
+.playtime-header {
+  display: inherit;
+  text-align: center;
+  justify-content: center;
+  padding-top: 10px;
+  font-weight: bold;
+}
+
+.play-icons {
+  padding-right: 6px;
+}
+
+.playtime-labels {
+  display:flex;
+  justify-content: center;
+  font-weight:600;
+  padding-top: 7px;
+  padding-bottom: 7px;
 }

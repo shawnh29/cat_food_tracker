@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import './Home.css'
-// import PlaytimeCounter from './PlaytimeCounter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faSquareCheck, faSquareXmark, faThumbsUp, faCloudSun, faMoon, faCoffee, faCat, faGamepad, faPlay} from "@fortawesome/free-solid-svg-icons";
 
@@ -12,7 +11,10 @@ function Home() {
     const [morningChuruDate, setMorningChuruDate] = useState(new Date());
     const [eveningChuruDate, setEveningChuruDate] = useState(new Date());
     const [breakfastClickDate, setBreakfastClickDate] = useState(new Date());
-    const [playtimes, setPlaytimes] = useState([])
+    const [playtime1, setPlaytime1] = useState(false);
+    const [playtime2, setPlaytime2] = useState(false);
+    const [playtime1Date, setPlaytime1Date] = useState(new Date());
+    const [playtime2Date, setPlaytime2Date] = useState(new Date());
     
     useEffect(() => {
       var timer = setInterval(() => setDate(new Date()), 1000);
@@ -24,7 +26,6 @@ function Home() {
       }
     })
 
-    // THERE'S A BUG WHERE THE VERY FIRST ELEMENT DOESN'T GET SAVED INTO LOCALSTORAGE, NEED TO FIX
     useEffect(() => {
       setGaveBreakfast(localStorage.getItem("gaveBreakfast"));
       setGaveMorningChuru(localStorage.getItem("gaveMorningChuru"));
@@ -32,22 +33,9 @@ function Home() {
       setBreakfastClickDate(new Date(localStorage.getItem("breakfastDate")));
       setMorningChuruDate(new Date(localStorage.getItem("morningChuruDate")));
       setEveningChuruDate(new Date(localStorage.getItem("eveningChuruDate")));
-      if (localStorage.getItem("playtimes")) {
-        var localStoragePlaytimes = JSON.parse(localStorage.getItem("playtimes"));
-        if (localStoragePlaytimes) {
-          setPlaytimes(localStoragePlaytimes);
-        }
-      }
+      setPlaytime1(localStorage.getItem("playtime1"));
+      setPlaytime2(localStorage.getItem("playtime2"));
     }, []);
-
-    const addPlaytime = () => {
-      setPlaytimes([ ...playtimes, {
-          id: playtimes.length,
-          value: date.toLocaleString([], {hour: '2-digit', minute: '2-digit'})
-      }])
-      localStorage.setItem("playtimes", JSON.stringify(playtimes));
-      console.log("Playtimes (in add func): ", playtimes)
-    }
 
     function handleBreakfastClick() {
       setGaveBreakfast(!gaveBreakfast);
@@ -82,6 +70,28 @@ function Home() {
       }
     }
 
+    function handlePlaytime1_click() {
+      setPlaytime1(!gaveMorningChuru);
+      setPlaytime1Date(new Date());
+      if (playtime1) {
+        localStorage.setItem("playtime1", "true");
+        localStorage.setItem("playtime1Date", playtime1Date);
+      } else {
+        localStorage.setItem("playtime1", "false");
+      }
+    }
+
+    function handlePlaytime2_click() {
+      setPlaytime2(!gaveMorningChuru);
+      setPlaytime2Date(new Date());
+      if (playtime2) {
+        localStorage.setItem("playtime2", "true");
+        localStorage.setItem("playtime2Date", playtime2Date);
+      } else {
+        localStorage.setItem("playtime2", "false");
+      }
+    }
+
     function handleResetClick() {
       localStorage.setItem("gaveBreakfast", "false");
       localStorage.setItem("gaveMorningChuru", "false");
@@ -89,14 +99,20 @@ function Home() {
       localStorage.setItem("breakfastDate", null);
       localStorage.setItem("morningChuruDate", null);
       localStorage.setItem("eveningChuruDate", null);
-      localStorage.setItem("playtimes", "");
+      localStorage.setItem("playtime1", "false");
+      localStorage.setItem("playtime2", "false");
+      localStorage.setItem("playtime1Date", null);
+      localStorage.setItem("playtime2Date", null);
       setGaveBreakfast(false);
       setGaveMorningChuru(false);
       setGaveEveningChuru(false);
+      setPlaytime1(false);
+      setPlaytime2(false);
       setEveningChuruDate(null);
       setMorningChuruDate(null);
       setBreakfastClickDate(null);
-      setPlaytimes([]);
+      setPlaytime2Date(null);
+      setPlaytime2Date(null);
     }
 
     return (
@@ -158,22 +174,30 @@ function Home() {
             </p>) : (null)}
         </div>
         <div className='play-tracker-box'>
-          <h4>
-            <FontAwesomeIcon icon={faGamepad}></FontAwesomeIcon> <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>
-            {" "}Playtime
-          </h4>
-          <button onClick={addPlaytime} id='playtime-button'>Record a playtime</button>
-          <ul>
-            <p>
-              {playtimes.map(playtime => (
-              <li key={playtime.id}>
-                Shade played at {playtime.value}, thanks! :)
-              </li>
-            ))}
-            </p>
-          </ul>
-          <button onClick={handleResetClick} id='reset-button'>Reset</button>
+          <span className='playtime-header'>
+            <FontAwesomeIcon icon={faGamepad} className='play-icons'></FontAwesomeIcon> <FontAwesomeIcon icon={faPlay} className='play-icons'></FontAwesomeIcon>
+            Playtime
+          </span>
+          <div className='playtime1box'>
+            <span className='playtime-labels'> Day-time </span>
+            {(localStorage.getItem("playtime1") === "false") ? (<button onClick={handlePlaytime1_click}>Played</button>)
+            : (null)}
+            {(localStorage.getItem("playtime1") === "true") ?
+              (<span>
+                  @ {playtime1Date.toLocaleDateString()} at {playtime1Date.toLocaleString([], {hour: '2-digit', minute: '2-digit'})}
+              </span>) : (null)}
+          </div>
+          <div className='playtime2box'>
+            <span className='playtime-labels'> Night-time </span>
+            {(localStorage.getItem("playtime2") === "false") ? (<button onClick={handlePlaytime2_click}>Played</button>)
+            : (null)}
+            {(localStorage.getItem("playtime2") === "true") ?
+              (<p>
+                  @ {playtime2Date.toLocaleDateString()} at {playtime2Date.toLocaleString([], {hour: '2-digit', minute: '2-digit'})}
+              </p>) : (null)}
+          </div>
         </div>
+        <button onClick={handleResetClick} id='reset-button'>Reset</button>
         <div className='time_box'>
           <label id='current-date'>
             Current date: {date.toLocaleDateString()}
